@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CaseMasterDetailsRel__c</fullName>
+    <description>any1</description>
+    <externalId>false</externalId>
+    <inlineHelpText>help1</inlineHelpText>
+    <label>CaseMasterDetailsRel</label>
+    <referenceTo>Case</referenceTo>
+    <relationshipLabel>TestMetaObjs (CaseMasterDetailsRel)</relationshipLabel>
+    <relationshipName>TestMetaObjs1</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>
