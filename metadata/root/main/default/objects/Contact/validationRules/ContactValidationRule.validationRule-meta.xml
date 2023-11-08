@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ContactValidationRule</fullName>
+    <active>false</active>
+    <errorConditionFormula>ContactNumber__c = 7737482074</errorConditionFormula>
+    <errorMessage>errror</errorMessage>
+</ValidationRule>
