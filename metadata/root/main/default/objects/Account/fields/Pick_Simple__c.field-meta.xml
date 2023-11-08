@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pick_Simple__c</fullName>
+    <description>test</description>
+    <externalId>false</externalId>
+    <label>Pick Simple</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Al1</fullName>
+                <default>false</default>
+                <label>Al1</label>
+            </value>
+            <value>
+                <fullName>Al2</fullName>
+                <default>false</default>
+                <label>Al2</label>
+            </value>
+            <value>
+                <fullName>Al3</fullName>
+                <default>false</default>
+                <label>Al3</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

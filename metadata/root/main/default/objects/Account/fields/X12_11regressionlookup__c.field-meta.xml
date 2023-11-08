@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X12_11regressionlookup__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>test</description>
+    <externalId>false</externalId>
+    <label>12.11regressionlookup</label>
+    <referenceTo>X12_11regression__c</referenceTo>
+    <relationshipLabel>Accounts</relationshipLabel>
+    <relationshipName>Accounts</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Lookup</type>
+</CustomField>
