@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X12_11_record_type_123</fullName>
+    <active>true</active>
+    <label>12.11 record type 123</label>
+    <picklistValues>
+        <picklist>X12_11picklist__c</picklist>
+        <values>
+            <fullName>Aborted</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Completed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Failed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Not Needed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Not Started</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Queued</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>multipicklist__c</picklist>
+        <values>
+            <fullName>Flat Fee</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Per Unit</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>picklistc__c</picklist>
+        <values>
+            <fullName>no</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>yes</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

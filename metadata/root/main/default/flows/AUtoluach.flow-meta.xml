@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>52.0</apiVersion>
+    <interviewLabel>AUtoluach {!$Flow.CurrentDateTime}</interviewLabel>
+    <isAdditionalPermissionRequiredToRun>true</isAdditionalPermissionRequiredToRun>
+    <label>Autolaunch AL</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordDeletes>
+        <name>DeleteAL</name>
+        <label>DeleteAL</label>
+        <locationX>176</locationX>
+        <locationY>374</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>BillingAddress</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>000</stringValue>
+            </value>
+        </filters>
+        <object>Account</object>
+    </recordDeletes>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Pause_AL</targetReference>
+        </connector>
+    </start>
+    <status>Obsolete</status>
+    <textTemplates>
+        <name>Tesaddd</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;fbfdbdff&lt;/p&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>Text</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;any message comes here&lt;/p&gt;</text>
+    </textTemplates>
+    <waits>
+        <name>Pause_AL</name>
+        <label>Pause AL</label>
+        <locationX>176</locationX>
+        <locationY>158</locationY>
+        <defaultConnector>
+            <targetReference>DeleteAL</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Path</defaultConnectorLabel>
+        <waitEvents>
+            <name>PAuseAL</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Api.Enterprise_Server_URL_110</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>DeleteAL</targetReference>
+            </connector>
+            <eventType>BatchApexErrorEvent</eventType>
+            <label>PAuseAL</label>
+        </waitEvents>
+    </waits>
+</Flow>

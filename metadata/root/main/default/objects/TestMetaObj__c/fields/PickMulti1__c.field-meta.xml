@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PickMulti1__c</fullName>
+    <description>any1</description>
+    <externalId>false</externalId>
+    <inlineHelpText>help1</inlineHelpText>
+    <label>PickMulti1</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Val3</fullName>
+                <default>false</default>
+                <label>Val3</label>
+            </value>
+            <value>
+                <fullName>Val1</fullName>
+                <default>false</default>
+                <label>Val1</label>
+            </value>
+            <value>
+                <fullName>Val2</fullName>
+                <default>false</default>
+                <label>Val2</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

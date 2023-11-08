@@ -1,0 +1,11 @@
+<apex:page >
+    <apex:includeScript value="/canvas/sdk/js/36.0/controller.js" />
+    <script type="text:javascript" src="https://<instance>.salesforce.com/canvas/sdk/js/52.0/canvas-all.js"></script>
+ 
+    <apex:canvasApp developerName="AppopsReleaseLocal" 
+      canvasId="cnvstart" 
+      width="100%"
+      height="infinite"
+      parameters="{githubCode: '', action: '', bitbucketCode: '', bitbucketWorkspace: '', page: 'appops_release', url: 'https://appopsdev9-dev-ed.lightning.force.com/lightning/n/AppopsReleaseLocal', deploymentPlanId: ''}"
+    />
+</apex:page>

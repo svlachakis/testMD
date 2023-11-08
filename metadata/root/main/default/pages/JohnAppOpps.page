@@ -1,0 +1,18 @@
+<apex:page >
+    <apex:includeScript value="/canvas/sdk/js/52.0/controller.js" />
+    <script type="text:javascript" src="https://appopsqa3.lightning.force.com/canvas/sdk/js/52.0/canvas-all.js"></script>
+    <apex:canvasApp developerName="johns_localAppOpps" 
+      canvasId="cnvstart" 
+      width="100%"
+      height="2000px"
+      maxHeight="infinite"
+      parameters="{githubCode: '', action: '', bitbucketCode: 'zQdPTqwTQV5p63NXuA', bitbucketWorkspace: 'prodlytest', page: 'appops_release', url: 'https://appopsqa3.lightning.force.com/lightning/n/JohnAppOpps', deploymentPlanId: ''}"
+    />
+    <script>
+       Sfdc.canvas(function() {
+            sr = JSON.parse('<%=signedRequestJson%>');
+            console.log(sr);
+            Sfdc.canvas.client.resize(sr.client);
+        });
+    </script>
+   </apex:page>
