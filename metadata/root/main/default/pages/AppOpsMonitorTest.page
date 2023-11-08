@@ -1,0 +1,27 @@
+<apex:page sidebar="{! IF( NOT ISNULL( $CurrentPage.parameters.showheadersidebar), $CurrentPage.parameters.showheadersidebar, 'true' ) }"
+    showHeader="{! IF( NOT ISNULL( $CurrentPage.parameters.showheadersidebar), $CurrentPage.parameters.showheadersidebar, 'true' ) }">
+    <apex:includeScript value="/lightning/lightning.out.js" />
+
+    <apex:includeLightning />
+
+    <style type="text/css">
+        html body.sfdcBody {
+            padding:0px!important;
+        }
+    </style>
+
+    <div id="lightning" />
+
+    <script>
+        var isLightning = (typeof sforce != 'undefined') && (sforce != null) && (sforce.one != null);
+        var appName = "PDRI:AppOpsMonitorApp";
+
+        $Lightning.use(appName, function() {
+            $Lightning.createComponent("PDRI:AppOpsMonitor",
+                { },
+                "lightning",
+                function(cmp) {
+            });
+        });
+    </script>
+</apex:page>
