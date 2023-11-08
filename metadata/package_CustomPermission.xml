@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><Package xmlns="http://soap.sforce.com/2006/04/metadata">
-<types><name>CustomPermission</name><members>PDRI__AppOps_Control_Instance_Manage</members><members>Standard_View_Connections</members><members>SBQQ__HideGlobalHeader</members><members>permissionexternal</members><members>SBQQ__CPQStandardPerm</members><members>AcustPerm</members><members>PDRI__AppOps_Account_Settings_Manage</members><members>CustPermTanya</members><members>PDRI__AppOps_Metadata_Manage</members></types>
-<version>59.0</version></Package>
