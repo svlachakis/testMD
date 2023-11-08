@@ -1,7 +1,0 @@
-<aura:component controller="MarkCloneComparisonViewController"
-                implements="force:hasRecordId,force:appHostable,force:lightningQuickAction"
-                description="Deep clone of a comparison view."
-                access="global">
-    <aura:handler name="init" value="{!this}" action="{!c.onHandleInit}" />
-	
-</aura:component>
