@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <defaultLandingTab>standard-home</defaultLandingTab>
+    <description>Salesforce CPQ simplifies configuration and ensures pricing and quoting accuracy. Sales reps reduce errors, improve productivity, and close more deals without ever leaving the Sales Cloud.</description>
+    <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
+    <label>Salesforce CPQ</label>
+    <logo>SBQQ__Salesforce_CPQ_Assets/SBQQ__Salesforce_CPQ_Logo.png</logo>
+    <tabs>standard-Account</tabs>
+    <tabs>standard-Opportunity</tabs>
+    <tabs>SBQQ__Quote__c</tabs>
+    <tabs>SBQQ__SolutionGroup__c</tabs>
+    <tabs>SBQQ__DiscountSchedule__c</tabs>
+    <tabs>SBQQ__QuoteTemplate__c</tabs>
+    <tabs>standard-Product2</tabs>
+    <tabs>SBQQ__ProductRule__c</tabs>
+    <tabs>standard-report</tabs>
+    <tabs>standard-Dashboard</tabs>
+    <tabs>standard-Document</tabs>
+    <tabs>SBQQ__ImportFormat__c</tabs>
+    <tabs>Custom_AL_Object__c</tabs>
+    <tabs>johnAjohnAppOppsppOpps</tabs>
+    <tabs>test_object1__c</tabs>
+    <tabs>test_object2__c</tabs>
+    <tabs>X11_19_1test__c</tabs>
+    <tabs>X11_21test__c</tabs>
+    <tabs>testObj__c</tabs>
+    <tabs>test_object_jj_2__c</tabs>
+    <tabs>SBQQ__BlockPrice__c</tabs>
+    <tabs>Cari_s_Custom_Object__c</tabs>
+    <tabs>Event_Test_Object__c</tabs>
+    <tabs>Test_VC__c</tabs>
+    <tabs>VEID__c</tabs>
+    <tabs>SBQQ__ProductOption__c</tabs>
+    <tabs>X11_14test__c</tabs>
+    <tabs>X12_15test__c</tabs>
+    <tabs>customLuda__c</tabs>
+    <tabs>Test_Object__c</tabs>
+    <tabs>PDRI__Managed_Environment__c</tabs>
+    <tabs>PDRI__Metadata_Deployment_Result__c</tabs>
+    <tabs>PDRI__Metadata_Component_Deployment_Result__c</tabs>
+    <tabs>Test_Athena__c</tabs>
+</CustomApplication>

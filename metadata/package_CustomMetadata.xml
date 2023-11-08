@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?><Package xmlns="http://soap.sforce.com/2006/04/metadata">
+<types><name>CustomMetadata</name><members>agf__ADM_WorkFieldsForRecordType.User_Story</members><members>agf__ADM_WorkFieldsForRecordType.ToDo</members><members>agf__ADM_WorkFieldsForRecordType.Bug</members><members>agf__ADM_WorkFieldsForRecordType.Template</members><members>agf__ADM_WorkFieldsForRecordType.Investigation</members></types>
+<version>59.0</version></Package>

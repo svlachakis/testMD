@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?><Package xmlns="http://soap.sforce.com/2006/04/metadata">
+<types><name>PermissionSetGroup</name><members>SBQQ__CPQIntegrationUserPermSetGroup</members><members>Testpermissiongroup123</members><members>new2</members><members>force__LoyaltyAnalytics_Admin_PSG</members><members>NEwAssG</members><members>Testgroup</members><members>force__MFGAnalytics_User_PSG</members><members>PSG1</members><members>PSG2</members><members>force__MFGAnalytics_Admin_PSG</members><members>permission_AL</members><members>force__LoyaltyAnalytics_User_PSG</members></types>
+<version>59.0</version></Package>
