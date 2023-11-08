@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Everything</fullName>
+        <default>false</default>
+        <label>Everything</label>
+    </customValue>
+    <customValue>
+        <fullName>Everyone</fullName>
+        <default>false</default>
+        <label>Everyone</label>
+    </customValue>
+    <customValue>
+        <fullName>Everywhere</fullName>
+        <default>false</default>
+        <label>Everywhere</label>
+    </customValue>
+    <customValue>
+        <fullName>All at Once</fullName>
+        <default>false</default>
+        <label>All at Once</label>
+    </customValue>
+    <masterLabel>Cari&apos;s Value Set 1</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>
