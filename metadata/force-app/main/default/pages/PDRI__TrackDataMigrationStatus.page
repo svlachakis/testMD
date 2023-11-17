@@ -1,0 +1,678 @@
+<!-- 
+/** 
+* Description   :   This page provides the functionality to show progress bar for the deployment progress in target org. 
+* 
+* Created By    :   Romesh Kumar (Simplyforce Technology) 
+* 
+* Created Date  :   01/18/2016 
+* 
+* Revision Log  :   V1.0 Created
+*
+* UpdatedBy     :  
+*
+* Deprecated    :  
+**/
+-->
+
+<apex:page standardController="PDRI__Deployment_Result__c" id="mainPge"
+           extensions="PDRI.TrackDataMigrationStatusExt"
+           tabStyle="PDRI__Deployment_Result__c" showheader="false"
+           action="{!getDeploymentInfo}">
+    <!--MD-1404 Start-->
+    <head>
+        <apex:slds />
+    </head>
+    
+    <apex:includeScript value="{!URLFOR($Resource.PDRI__VIS, 'vis-4.21.0/dist/vis.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.PDRI__VIS, 'vis-4.21.0/dist/vis.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.PDRI__MooverResources, 'styles/general.css')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.PDRI__MooverResources, 'scripts/general.js')}"/>
+    
+    <!--MD-1404 End-->
+    <apex:stylesheet value="{!URLFOR($Resource.PDRI__Prodly_Moover_JQuery, 'JQuery/jquery-ui.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.PDRI__Prodly_Moover_JQuery, 'JQuery/style.css')}" />
+    <apex:includeScript value="{!URLFOR($Resource.PDRI__Prodly_Moover_JQuery, 'JQuery/jquery-1.12.4.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.PDRI__Prodly_Moover_JQuery, 'JQuery/jquery-ui.js')}" />
+    
+    <!--MD-3266: Changed the static resource from SLDS_Resource to SLDS -->
+    <!-- <apex:stylesheet value="{!URLFOR($Resource.SLDS_Resource, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />  -->
+    <apex:stylesheet value="{!URLFOR($Resource.PDRI__SLDS, '/styles/salesforce-lightning-design-system.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.PDRI__SLDS, '/styles/salesforce-lightning-design-system.min.css')}" />
+    
+    <script>
+    $(document).ready(function() {
+        progressRef('{!completedDatSetCount}', '{!totalDataSetCount}', '{!deploymentStatus}', '{!deploymentResult}');
+        if(progressCounter == 100) {
+            clearInterval(myVar);
+        }
+    });
+    
+    var progressCounter = 0;
+    
+    var chkFlag = true;
+    var expandedComponentIds = new Array();
+    
+    
+    //Functon to refresh Prgress bar for Deployment process
+    function progressRef(data1, data2, strStatus, strResult) {
+        
+        var completedDataSet = parseInt(data1);
+        var totalDataSet = parseInt(data2);
+        
+        if (totalDataSet > 0)
+            progressCounter = Math
+            .round((completedDataSet / totalDataSet) * 100);
+        else
+            progressCounter = parseInt(0);
+        
+        if (progressCounter == undefined || progressCounter == null) {
+            progressCounter = 0;
+        }
+        
+        $(".progress-text").text(progressCounter + '%');
+        
+        if(strStatus ==  'Finished' || strStatus == 'Timedout')//MD-2711
+        {
+            $(".progress-text").text('100%');
+            progressCounter = 100;
+        }
+        
+        if(progressCounter >= 100 && strStatus !=  'Finished' && strStatus != 'Timedout')//MD-2711
+        {
+            $(".progress-text").text('99%');
+            progressCounter = 99;
+        }
+        
+        $("#progressbar").progressbar({
+            value : progressCounter
+        });
+        
+        //MD-1404 Start
+        $(".slds-progress-bar__value").css('width',progressCounter+'%');
+        
+        if(strResult == 'Success') {
+            $(".slds-progress-bar__value").css('background','#4BCA81');
+        }
+        
+        if(strResult == 'Failure') {
+            $(".slds-progress-bar__value").css('background','#D4504C');
+        }
+        //MD-1404 End
+		
+		//MD-2941
+        if(strStatus == 'Stopped'){	
+        	$(".slds-progress-bar__value").css('width',0);
+        }
+    }
+    
+    var myVar = setInterval(function() {
+        if (progressCounter == 100){
+            chkFlag = false;
+            hardRefresh();
+        }
+        
+        if (chkFlag == true)
+            progressRefresh();
+        
+        
+        
+    }, 5000);
+    
+    function setIndexToController(index) {
+        
+        //Calling method and passing id to it.
+        setIndexNum(index);
+    }
+    
+    function collapseDateSetBar(){
+        collapseBar();
+    }
+    
+    
+   //MD-1462 
+    function tooltipDisplay(tooltipId) {
+        toggleElemVisibility(tooltipId);
+    }
+    
+     function toolTipDisplayOut(tooltipId) {
+        toggleElemVisibility(tooltipId);
+     } 
+    // MD-1462
+    </script>
+    
+    <style>
+        .Custom46Tab .listViewport .subNav .linkBar, .Custom46Tab .mComponent .cHeader,
+        .Custom46Tab .genericTable, .Custom46Tab .bSubBlock, .Custom46Tab .bPageBlock
+        {
+        border-top: 0px;
+        }
+        
+        .bPageBlock {
+        border: 0px !important;
+        border-radius: 0px !important;
+        }
+        
+        .slds-button slds-button--neutral cuf-publisherShareButton uiButton--default uiButton--brand uiButton
+        {
+        display: none !important;
+        }
+        
+        #mainPge {
+        width: 500px !important;
+        }
+        
+        .slds .slds-section-title--divider:first-child {
+        margin-top: 0px;
+        margin-left: -16px;
+        }
+        
+        .slds .slds-section-title--divider {
+        float: left;
+        width: 100%;
+        margin: 0px;
+        border-bottom: 1px solid #ccc;
+        }
+        
+        .slds .slds-section-title--divider:first-child {
+        margin-top: 0px;
+        margin-left: 0px;
+        }
+        
+        .ui-widget-header {
+        border: 1px solid #dddddd;
+        color: #ffffff;
+        font-weight: bold;
+        background: #1e5799; /* Old browsers */
+        background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 57%, #55b2d1 87%, #7db9e8
+        100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top, #1e5799 0%, #2989d8 57%, #55b2d1 87%,
+        #7db9e8 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom, #1e5799 0%, #2989d8 57%, #55b2d1 87%, #7db9e8
+        100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799',
+        endColorstr='#7db9e8', GradientType=0);
+        }
+        
+        .ui-widget-header {
+        background-color: lightgrey;
+        background-image: linear-gradient(45deg, rgba(0, 0, 0, 0.035) 25%,
+        transparent 25%, transparent 50%, rgba(0, 0, 0, 0.035) 50%,
+        rgba(0, 0, 0, 0.035) 75%, transparent 75%, transparent);
+        background-size: 64px 64px;
+        }
+        
+        /*MD-1404 comment
+        #progressbar {
+        border: 1px solid lightblue;
+        padding: 2px 0px 0px 1px;
+        height: 34px;
+        }
+        */
+        
+        .apexp .bPageBlock.apexDefaultPageBlock .pbBody {
+        margin: 0px 12px 7px;
+        }
+        
+        /*MD-1404 comment
+        .progress-text {
+        width: 100%;
+        float: left;
+        text-align: center;
+        padding: 5px;
+        font-weight: bold;
+        font-size: 14px;
+        color: #1869fc;
+        margin-top: 0px;
+        }
+        */
+        
+        /*MD-1404 Start*/
+        .relatedListSec{
+        float: left;
+        width: 100%;
+        margin-top: 20px;
+        }
+        /*MD-1404 End*/
+        
+         /*MD-1462*/
+        /*MD-1572 START*/
+        #tooltip1{
+            right: -53px;
+            top: 30px;
+            min-width: 177px;
+        }
+        
+        #tooltip2{
+            right: -53px;
+            top: 30px;
+            min-width: 180px;
+        }
+        
+        #tooltip3{
+        right: -10px;
+        top: 30px;
+        min-width: 74px;
+        }
+        
+        #tooltip4{
+        right: -24px;
+        top: 30px;
+        min-width: 113px;
+        }
+        
+        #tooltip5{
+        right: -20px;
+        top: 30px;
+        min-width: 100px;
+        }
+        #tooltip1:before ,#tooltip1:after, #tooltip2:before ,#tooltip2:after, #tooltip3:before ,#tooltip3:after, #tooltip4:before ,#tooltip4:after, #tooltip5:before ,#tooltip5:after {
+            top: 5%;
+            left: 56%;
+            content:"";
+            box-shadow: 0 0 0;
+        }
+        /*MD-1572 END*/
+        
+        .slds .slds-popover--tooltip {
+            background: white;
+            border: none;
+        }
+        
+        .slds .slds-popover--tooltip .slds-popover__body {
+            font-size: 12px;
+            color: #16325c;
+        }
+            
+        /*MD-1462*/
+        /*MD-1497*/
+        .slds a:first-child {
+            color: #0070d2;
+            transition: color .1s linear;
+            font-size: .8125rem;
+        }
+        /*MD-1588 Start*/
+        table.slds-table.slds-table--bordered.slds-table--cell-buffer tr .slds-popover.slds-popover--tooltip.slds-nubbin--left-top.toggle.slds-hide {
+            bottom: 0px !important;
+            top: auto !important;
+        }
+                
+        table.slds-table.slds-table--bordered.slds-table--cell-buffer tr .slds-popover.slds-popover--tooltip.slds-nubbin--left-top.toggle.slds-hide:before, table.slds-table.slds-table--bordered.slds-table--cell-buffer tr .slds-popover.slds-popover--tooltip.slds-nubbin--left-top.toggle.slds-hide:after {
+            bottom: 10px !important;
+            top: auto !important;
+        }
+        /*MD-1588 End*/
+    </style>
+    
+    <!-- Page Messages
+    MD-271 remove from Inline page error message
+    <apex:pageMessages id="deployMsg" />
+    -->
+    <!--  main Div -->
+    <div id="sldDiv" class="slds" style="overflow: auto; width: 100%; height: 100%">
+        
+        <apex:form id="frm">
+            
+            <!-- Controller funciton to refresh the data and progress bar too -->
+            <apex:actionFunction name="progressRefresh" reRender="inlinetable,inlinetablesec,plusimage,minusimage,progressbar" action="{!getDeploymentInfo}" oncomplete="progressRef('{!completedDatSetCount}', '{!totalDataSetCount}', '{!deploymentStatus}' , '{!deploymentResult}');"/>
+            
+            <!-- Controller funciton to refresh the data and progress bar too -->
+            <apex:actionFunction name="collapseBar" reRender="inlinetable,plusimage,minusimage,inlinetablesec" action="{!setCollapse}" />
+            
+            <!-- Method to set the the value to true for which data set should expand -->
+            <apex:actionFunction action="{!setIndex}" name="setIndexNum" rerender="inlinetable,inlinetablesec,plusimage,minusimage" > 
+                <apex:param name="indexParam"  value=""/>
+            </apex:actionFunction>
+            
+            <!-- Page block having content of page -->
+            <apex:pageBlock id="pB1" mode="edit ">
+                
+                <!--  Having Page Block header -->
+                <!--MD-1248 comment
+                <apex:outputPanel styleClass="slds-section-title--divider" id="plusimage" layout="block" style="width: 100%; float: left;cursor:pointer !important;display:{!IF(NOT(collapseDataSet), '', 'none')};" onclick="collapseDateSetBar();" >
+                <div style="width: 3%; float: left;">
+                
+                <apex:image style="padding-top:3px;" url="{!$Resource.Plus_Image}" />
+                </div> 
+                <div class="slds-grid">
+                <div class="slds-col slds-has-flexi-truncate">
+                <h1 class="slds-text-heading--medium slds-truncate"
+                style="text-transform: none !important;">Progress Bar</h1>
+                </div>
+                </div>
+                </apex:outputPanel>
+                -->
+                
+                <!--  Collapse functionality on the Prgress Bar Header -->
+                <!--MD-1248 comment changes -->
+                <!--MD-1404 comment apex:outputPanel styleClass="slds-section-title--divider" style="width: 100%; float: left;" layout="block" -->
+                    
+                    <!--MD-1248 comment  <div style="width: 3%; float: left;">
+
+                    <apex:image style="padding-top:3px;"
+                    url="{!$Resource.Minus_Image}" />
+                    </div>  --> 
+                    <!-- MD-1404 Start -->
+                       <div class="slds-page-header" role="banner">
+                           <div id="j_id0:theForm:navPanel">
+                               <nav class="slds-m-bottom--xx-small" role="navigation">
+                                   <p class="slds-assistive-text" id="bread-crumb-label">You are
+                                       here:</p>
+                                   <ol aria-labelledby="bread-crumb-label"
+                                       class="slds-breadcrumb slds-list--horizontal">
+                                   </ol>
+                               </nav>
+                           </div>
+                        <div class="slds-grid">
+                            <div class="slds-col slds-has-flexi-truncate">
+                                <h1 class="slds-text-heading--medium slds-truncate"
+                                    style="text-transform: none !important; color: #16325c;">{! IF(isSimulationType, 'Simulation Results', 'Deployment Results') }</h1>
+                            </div>
+                            
+                            <!-- MD-1462 Start -->
+                        <div>
+                            <!-- AP-2188 Start -->
+                            <div class="slds-form-element" style="display: inline; vertical-align: middle;" >
+                                Legend:
+                            </div>
+                            <!-- AP-2188 End -->
+
+                            <div class="slds-form-element" style="display: inline;padding: 0 5px;" >
+                               <div class="slds-form-element__icon slds-align-middle" >
+                                   <img  src="{!URLFOR($Resource.MooverResources, 'images/Base_Progress_Ring_Partially_Drained.png')}" alt="Base_Progress_Ring_Partially_Drained" height="20" width="20" onmouseover="tooltipDisplay('tooltip1');" onmouseout="toolTipDisplayOut('tooltip1');"/>
+                               </div>
+                             
+                               <div class="slds-popover slds-popover--tooltip slds-nubbin--left-top toggle slds-hide" role="tooltip" style="position: absolute;float: left;" id="tooltip1">
+                                  <div class="slds-popover__body">{!$Label.TOOL_TIP_BASE_PROGRESS_RING_PARTIALLY_DRAINED} </div>
+                               </div>
+                           </div>
+                           
+                           
+                           <div class="slds-form-element" style="display: inline;padding: 0 5px;" >
+                               <div class="slds-form-element__icon slds-align-middle" >
+                                    <img  src="{!URLFOR($Resource.MooverResources, 'images/Base_With_Warning_Icon_Partially_Drained.png')}" alt="Base_With_Warning_Icon_Partially_Drained" height="20" width="20" onmouseover="tooltipDisplay('tooltip2');" onmouseout="toolTipDisplayOut('tooltip2');" />
+                               </div>
+                             
+                               <div class="slds-popover slds-popover--tooltip slds-nubbin--left-top toggle slds-hide" role="tooltip" style="position: absolute;float: left;" id="tooltip2">
+                                  <div class="slds-popover__body">{!$Label.TOOL_TIP_BASE_WITH_WARNING_ICON_PARTIALLY_DRAINED}</div>
+                               </div>
+                           </div>
+                         
+                             <div class="slds-form-element" style="display: inline;padding: 0 5px;" >
+                               <div class="slds-form-element__icon slds-align-middle" >
+                                   <img  src="{!URLFOR($Resource.MooverResources, 'images/Base_Complete_No_Drained.png')}" alt="Base_Complete_No_Drained" height="20" width="20" onmouseover="tooltipDisplay('tooltip3');" onmouseout="toolTipDisplayOut('tooltip3');"/>
+                               </div>
+                             
+                               <div class="slds-popover slds-popover--tooltip slds-nubbin--left-top toggle slds-hide" role="tooltip" style="position: absolute;float: left;" id="tooltip3">
+                                  <div class="slds-popover__body">{!$Label.TOOL_TIP_BASE_COMPLETE_NO_DRAINED}</div>
+                               </div>
+                           </div>
+                           
+                             <div class="slds-form-element" style="display: inline;padding: 0 5px;" >
+                               <div class="slds-form-element__icon slds-align-middle" >
+                                   <img  src="{!URLFOR($Resource.MooverResources, 'images/Base_With_Warning_Icon_No_Drained.png')}" alt="Base_With_Warning_Icon_No_Drained" height="20" width="20" onmouseover="tooltipDisplay('tooltip4');" onmouseout="toolTipDisplayOut('tooltip4');"/>
+                               </div>
+                             
+                               <div class="slds-popover slds-popover--tooltip slds-nubbin--left-top toggle slds-hide" role="tooltip" style="position: absolute;float: left;" id="tooltip4">
+                                  <div class="slds-popover__body">{!$Label.TOOL_TIP_BASE_WITH_WARNING_ICON_NO_DRAINED}</div>
+                               </div>
+                           </div>
+                           
+                           <div class="slds-form-element" style="display: inline;padding: 0 5px;" >
+                               <div class="slds-form-element__icon slds-align-middle" >
+                                <img  src="{!URLFOR($Resource.MooverResources, 'images/Base_With_Expired_Icon_No_Drained.png')}" alt="Base_With_Expired_Icon_No_Drained" height="20" width="20" onmouseover="tooltipDisplay('tooltip5');" onmouseout="toolTipDisplayOut('tooltip5');" />
+                               </div>
+                             
+                               <div class="slds-popover slds-popover--tooltip slds-nubbin--left-top toggle slds-hide" role="tooltip" style="position: absolute;float: left;" id="tooltip5">
+                                  <div class="slds-popover__body">{!$Label.TOOL_TIP_BASE_WITH_EXPIRED_ICON_NO_DRAINED}</div>
+                               </div>
+                           </div>
+                            
+                            
+                         </div>
+                        <!-- MD-1462 EnD-->
+
+                    
+                        </div>
+                    </div>
+                    <!-- MD-1404 End -->
+                    
+                <!--/apex:outputPanel-->
+                
+                <!-- Progress Bar  -->
+                <!--MD-1404 comment div id="progressbar">
+
+                <div class="progress-text"></div>
+                </div-->
+                
+                <!-- MD-1404 Start -->
+                <div id="progressbar" class="slds-progress-bar slds-progress-bar_large" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" role="progressbar">
+                    <span class="slds-progress-bar__value">
+                        <span class="slds-assistive-text progress-text"></span>
+                    </span>
+                </div>
+                
+                <apex:outputPanel styleClass="slds-section-title--divider" style="width: 100%; float: left;" layout="block"></apex:outputPanel>
+                
+                    <apex:outputPanel styleClass="relatedListSec">
+                            <div class="slds-page-header" role="banner" style="background: #f7f9fb;">
+                                <div id="j_id0:theForm:navPanel">
+                                    <nav class="slds-m-bottom--xx-small" role="navigation">
+                                        <p class="slds-assistive-text" id="bread-crumb-label">You are
+                                            here:</p>
+                                        <ol aria-labelledby="bread-crumb-label"
+                                            class="slds-breadcrumb slds-list--horizontal">
+                                        </ol>
+                                    </nav>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-has-flexi-truncate">
+                                        <h1 class="slds-text-heading--medium slds-truncate"
+                                            title="{! IF(isSimulationType, 'Simulation Batch Results', 'Deployment Batch Results') }" style="font-size: 1.25rem; color: #16325c;">{! IF(isSimulationType, 'Simulation Batch Results', 'Deployment Batch Results') }</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        <!--MD-1404 End -->
+                    <!-- Data Set result table with collapse expand feature -->
+                    <apex:outputpanel id="inlinetable" style="display:{!IF(collapseDataSet, '', 'none')};">
+                    <apex:variable var="index" value="{!0}"/>
+                    
+                    <apex:repeat value="{!dataSetDetails}" var="dataSetResult">
+                        
+                        <apex:outputPanel styleClass="slds-section-title--divider" id="plusimage" layout="block" style="display:{!IF(NOT(dataSetResult.display), '', 'none')}; width: 100%; float:left;cursor:pointer !important; background: #f7f9fb;" onclick="setIndexToController('{!index}')">
+                        <div style="width: 3%; float: left; cursor: pointer;">
+                        	<!-- MD-3266 -->
+                        	<apex:image value="{!URLFOR($Resource.PDRI__MooverResources, '/images/Plus_Image.png')}" alt="show" />
+                        </div>
+                        <div style="width: 97%; float: left;">
+                        {!dataSetResult.dataSetDetail.Data_Set__r.Name} -
+                        {!dataSetResult.dataSetDetail.PDRI__Status__c}
+                        </div>
+                        </apex:outputPanel>
+                        
+                        <apex:outputPanel styleClass="slds-section-title--divider" id="minusimage" style="display:{!IF(dataSetResult.display, '', 'none')}; width: 100%; float: left;cursor:pointer !important; background: #f7f9fb;" onclick="setIndexToController('{!index}')" layout="block" >
+                        <div style="width: 3%; float: left; cursor: pointer;">
+                        	<!-- MD-3266 -->
+                        	<apex:image value="{!URLFOR($Resource.PDRI__MooverResources, '/images/Minus_Image.png')}" alt="hide" />
+                        </div>
+                        <div style="width: 97%; float: left;">
+                        {!dataSetResult.dataSetDetail.Data_Set__r.Name} -
+                        {!dataSetResult.dataSetDetail.PDRI__Status__c}</div>
+                        </apex:outputPanel>
+                        <apex:outputpanel id="inlinetablesec" style="display:{!IF(dataSetResult.display, '', 'none')};">
+
+                            <!--MD-1404 comment apex:outputPanel rendered="{!dataSetResult.dataSetDetail.Deployment_Batch_Results__r.size > 0 && dataSetResult.dataSetDetail.Status__c == 'Finished'}"-->
+                            <apex:outputPanel >
+                                <!--MD-1478 Add style -->
+                                <!--MD-1478 Remove width and truncate class in th -->
+                                <table class="slds-table slds-table--bordered slds-table--cell-buffer" style="width:100%;overflow:hidden;">
+                                    <thead>
+                                        <tr class="slds-text-title--caps">
+                                            <th scope="col" style="width:10%">
+                                            <!-- MD-1748 - Removed header -->
+                                                <div title="Deployment Batch Result Name"></div>
+                                            </th>
+                                            <th scope="col" style="width:36%; display:{!IF(NOT(isVersioningType), '', 'none')};">
+                                                <!-- MD-1479 -->
+                                                <!-- MD-1601 --><!-- MD-2372 -->
+                                                <div  title="Data Set">Data Set Element Name</div>
+                                            </th>
+                                            <th scope="col" style="width:36%; display:{!IF(isVersioningType, '', 'none')};">
+                                                <div title="Managed Object">Managed Object</div>
+                                            </th>
+                                            <!-- MD-1701 Start -->
+                                            <th scope="col" style="display:{!IF(dataSetResult.dataSetDetail.Deployment_Batch_Results__r.size > 0 && dataSetResult.dataSetDetail.Deployment_Batch_Results__r[0].Deployment_Plan_Step_Result__c != null, '', 'none')};">
+                                                <div  title="Deployment Plan Step">Deployment Plan Step</div>
+                                            </th>
+                                            <!-- MD-1701 End -->
+                                            <!-- MD-1639 Start -->
+                                            <th scope="col" style="display:{!IF(isSimulationType, 'none', '')};">
+                                                <div  title="Operation">Operation</div>
+                                            </th>
+                                            <!-- MD-1639 End -->
+                                            <!-- MD-2450 Start -->
+                                            <th scope="col" style="display:{!IF(NOT(isVersioningType), '', 'none')};">
+                                                <div  title="Upsert Method">Upsert Method</div>
+                                            </th>
+                                            <!-- MD-2450 End -->
+                                            <th scope="col">
+                                                <div class="slds-truncate" title="Result">Result</div>
+                                            </th>
+                                            <!-- MD-1404 Start -->
+                                            <th scope="col" style="display:{!IF(isSimulationType, 'none', '')};">
+                                                <div  title="Data Record Results">Data Record Results</div>
+                                            </th>
+                                            <!-- MD-1404 End -->
+                                            <!-- AP-2188 Start -->
+                                            <th scope="col" >
+                                                <div  title="Processed Records">Processed Records</div>
+                                            </th>
+                                            <th scope="col" style="display:{!IF(isSimulationType, 'none', '')};">
+                                                <div  title="Succeeded Records">Succeeded Records</div>
+                                            </th>
+                                            <th scope="col" style="display:{!IF(isSimulationType, 'none', '')};">
+                                                <div  title="Failed Records">Failed Records</div>
+                                            </th>
+                                            <!-- AP-2188 End -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!--MD-1478 Remove width and truncate class in td -->
+                                        <apex:repeat value="{!dataSetResult.dataSetDetail.Deployment_Batch_Results__r}"
+                                                     var="dataSetBatchResult">
+                                            <tr>
+                                                <!-- MD-1478 -->
+                                                <td data-label="Deployment Result Name" >
+                                                    <div>
+                                                        <!-- MD-1404 Start -->
+                                                        <a href="/{!dataSetBatchResult.Id}" target="_blank">View Results</a>
+                                                        <!-- MD-1404 End -->
+                                                    </div>
+                                                </td>
+                                                <!-- MD-1478 -->
+                                                <td data-label="Data Set Name" style="max-width: 100px; display:{!IF(NOT(isVersioningType), '', 'none')};">
+                                                    <div style=" max-width: 100%; overflow: hidden;text-overflow: ellipsis;">
+                                                        <!-- MD-1479 -->
+                                                        <a href="/{!dataSetBatchResult.Data_Set__c}" target="_blank">{!dataSetBatchResult.Data_Set__r.Name}</a>
+                                                    </div>
+                                                </td>
+                                                <td data-label="Managed Object" style="max-width: 100px; display:{!IF(isVersioningType, '', 'none')};">
+                                                    <div style=" max-width: 100%; overflow: hidden;text-overflow: ellipsis;">
+                                                        {!dataSetBatchResult.Object_Name__c}
+                                                    </div>
+                                                </td>
+												<!-- MD-1701 Start -->
+                                                <td data-label="Deployment Plan Step" style="display:{!IF(dataSetBatchResult.Deployment_Plan_Step_Result__c != null, '', 'none')};">
+                                                	<div style=" max-width: 100%; overflow: hidden;text-overflow: ellipsis;">
+                                                		<a href="/{!dataSetBatchResult.Deployment_Plan_Step_Result__c}" target="_blank">{!dataSetBatchResult.Deployment_Plan_Step_Result__r.Deployment_Plan_Step__r.Name}</a>
+                                                	</div>
+                                                </td>
+                                                <!-- MD-1701 End -->
+                                                <!-- MD-1639 Start -->
+                                                <td data-label="Operation" style="display:{!IF(isSimulationType, 'none', '')};">
+                                                    <div class="slds-truncate" style="white-space: normal;font-size: small;">{!dataSetBatchResult.Operation__c}</div>
+                                                </td>
+                                                <!-- MD-1639 End -->
+                                                <!-- MD-2450 Start -->
+                                                <td data-label="Upsert Method" style="display:{!IF(NOT(isVersioningType), '', 'none')};">
+                                                    <div class="slds-truncate" style="white-space: normal;font-size: small;">{!dataSetBatchResult.Upsert_Method_Used__c}</div>
+                                                </td>
+                                                <!-- MD-2450 End -->
+
+                                                <!-- MD-1478 -->
+                                                <td data-label="Data Set Result" >
+                                                    <!--MD-1404 Start-->
+                                                    <div  style="margin-left: 5%;">
+                                                    	<!-- MD-3579 -->
+                                                        <apex:outputText styleClass="iconToolTip" escape="false" html-onmouseover="toggleElementVisibility(this, true)" html-onmouseout="toggleElementVisibility(this, false)">
+                                                            <apex:image rendered="{! dataSetBatchResult.Result__c = 'Success' }" value="{!URLFOR($Resource.PDRI__MooverResources, '/images/Base_Complete_No_Drained.png')}" width="20" height="20" title="Success."/>
+                                                            <apex:image rendered="{! dataSetBatchResult.Result__c = 'Failure' }" value="{!URLFOR($Resource.PDRI__MooverResources, '/images/Base_With_Expired_Icon_No_Drained.png')}" width="20" height="20" title="Deployment failure."/>
+                                                        </apex:outputText>
+                                                    </div>
+                                                    <!--MD-1588-->
+                                                    <!-- MD-1766 removed slds-hide and add display:none property-->
+                                                    <div class="slds-popover slds-popover--tooltip slds-nubbin--left-top toggle" role="tooltip" style="position: absolute;top: 2px;left:46px;background: #fff;max-width: 120px;white-space: normal;display:none;">
+                                                      <div class="slds-popover__body" style="color: #000;"></div>
+                                                    </div>
+                                                    <!--MD-1404 End-->
+                                                </td>
+                                                <!-- MD-1404 Start -->
+                                                <!-- MD-1478 -->
+                                                <td data-label="Data Set Record Failures" style="display:{!IF(isSimulationType, 'none', '')};">
+                                                    <div  style="margin-left: 20%;">
+                                                    	<!-- MD-3579 -->
+                                                        <apex:outputText styleClass="iconToolTip" escape="false" html-onmouseover="toggleElementVisibility(this, true)" html-onmouseout="toggleElementVisibility(this, false)">
+                                                            <apex:image rendered="{! dataSetBatchResult.Result__c != '' && dataSetBatchResult.Data_Record_Failures__c == true }" value="{!URLFOR($Resource.PDRI__MooverResources, '/images/Base_With_Warning_Icon_No_Drained.png')}" width="20" height="20" title="Deployment record failure."/>
+                                                            <apex:image rendered="{! dataSetBatchResult.Result__c != '' && dataSetBatchResult.Data_Record_Failures__c == false }" value="{!URLFOR($Resource.PDRI__MooverResources, '/images/Base_Complete_No_Drained.png')}" width="20" height="20" title="Success."/>
+                                                            <apex:image rendered="{! dataSetBatchResult.Result__c == '' && dataSetBatchResult.Deployment_Data_Set_Status__c == 'Started' && dataSetBatchResult.Data_Record_Failures__c == true }" value="{!URLFOR($Resource.PDRI__MooverResources, '/images/Base_With_Warning_Icon_Partially_Drained.png')}" width="20" height="20" title="In progress with few failures."/>
+                                                            <apex:image rendered="{! dataSetBatchResult.Result__c == '' && dataSetBatchResult.Deployment_Data_Set_Status__c == 'Started' && dataSetBatchResult.Data_Record_Failures__c == false }" value="{!URLFOR($Resource.PDRI__MooverResources, '/images/Base_Progress_Ring_Partially_Drained.png')}" width="20" height="20" title="In progress with no failures."/>
+                                                            <apex:image rendered="{! dataSetBatchResult.Result__c == '' && dataSetBatchResult.Deployment_Data_Set_Status__c == 'Finished' && dataSetBatchResult.Data_Record_Failures__c == true }" value="{!URLFOR($Resource.PDRI__MooverResources, '/images/Base_With_Warning_Icon_No_Drained.png')}" width="20" height="20" title="Deployment record failure."/>
+                                                            <apex:image rendered="{! dataSetBatchResult.Result__c == '' && dataSetBatchResult.Deployment_Data_Set_Status__c == 'Finished' && dataSetBatchResult.Data_Record_Failures__c == false }" value="{!URLFOR($Resource.PDRI__MooverResources, '/images/Base_Complete_No_Drained.png')}" width="20" height="20" title="Success."/>
+														</apex:outputText>
+                                                    </div>
+                                                    <!--MD-1588-->
+                                                    <!-- MD-1766 removed slds-hide and add display:none property-->
+                                                    <div class="slds-popover slds-popover--tooltip slds-nubbin--left-top toggle" role="tooltip" style="position: absolute;top: 2px;left:32%;background: #fff;max-width: 185px;white-space: normal;display:none;">
+                                                      <div class="slds-popover__body" style="color: #000;"></div>
+                                                    </div>
+                                                </td>
+                                                <!-- MD-1404 End -->
+                                                <!-- AP-2188 Start -->
+                                                <td data-label="Processed Records">
+                                                    {! dataSetBatchResult.Data_Records_Processed__c }
+                                                </td>
+                                                <td data-label="Succeeded Records" style="display:{!IF(isSimulationType, 'none', '')};">
+                                                    {! dataSetBatchResult.Data_Records_Succeeded__c }
+                                                </td>
+                                                <td data-label="Failed Records" style="display:{!IF(isSimulationType, 'none', '')};">
+                                                    {! dataSetBatchResult.Data_Records_Failed__c }
+                                                </td>
+                                                <!-- AP-2188 End -->
+                                            </tr>
+                                        </apex:repeat>
+                                    </tbody>
+                                </table>
+                            </apex:outputPanel>
+                            <apex:outputPanel id="noDataMsg"
+                                              rendered="{!dataSetResult.dataSetDetail.Deployment_Batch_Results__r.size == 0 && (dataSetResult.dataSetDetail.PDRI__Status__c == 'Finished' || dataSetResult.dataSetDetail.PDRI__Status__c == 'Timedout')}"><!-- MD-2711 -->
+                                <table
+                                       class="slds-table slds-table--bordered slds-table--cell-buffer">
+                                    
+                                    <tbody>
+                                        <tr>
+                                            <td data-label="No Data Msg"
+                                                style="width: 100%; text-align: center;"><apex:outputText style="font-size: 13px; background-color: lightgrey; border-radius: 4px; padding: 3px; font-weight: bold;"
+                                                                                                          value="{!$Label.PDRI__NO_DATA_MIGRATION_MSG}" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </apex:outputPanel>
+                        </apex:outputpanel>
+                        <apex:variable var="index" value="{!index+1}"/>
+                    </apex:repeat>
+                </apex:outputpanel>
+                </apex:outputPanel>
+            </apex:pageBlock>
+        </apex:form>
+    </div>
+</apex:page>
