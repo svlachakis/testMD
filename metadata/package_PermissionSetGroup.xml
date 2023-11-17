@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><Package xmlns="http://soap.sforce.com/2006/04/metadata">
-<types><name>PermissionSetGroup</name><members>force__LoyaltyAnalytics_Admin_PSG</members><members>force__MFGAnalytics_User_PSG</members><members>force__MFGAnalytics_Admin_PSG</members><members>force__LoyaltyAnalytics_User_PSG</members><members>Test_ATG_GROUP</members></types>
-<version>59.0</version></Package>
