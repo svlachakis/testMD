@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TestObjectExternal__c</fullName>
+    <externalId>false</externalId>
+    <label>TestObjectExternal</label>
+    <length>40</length>
+    <referenceTo>TestObjectExternal__x</referenceTo>
+    <relationshipLabel>Accounts</relationshipLabel>
+    <relationshipName>Accounts</relationshipName>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>ExternalLookup</type>
+</CustomField>

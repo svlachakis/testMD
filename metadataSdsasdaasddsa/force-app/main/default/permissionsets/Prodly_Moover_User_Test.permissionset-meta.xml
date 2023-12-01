@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Standard user permissions across all Prodly objects except creating         connections and view/modify all permissions across all other Prodly objects.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Prodly User Test cloned</label>
+</PermissionSet>
